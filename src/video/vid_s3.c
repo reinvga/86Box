@@ -71,6 +71,8 @@
 #define ROM_SPEA_MIRAGE_P64            "roms/video/s3/S3_764VL_SPEAMirageP64VL_ver5_03.BIN"
 #define ROM_NUMBER9_9FX                "roms/video/s3/s3_764.bin"
 #define ROM_PHOENIX_TRIO64             "roms/video/s3/86c764x1.bin"
+/* reinVGA: the clean ROM under a name of its own, so no vendor ROM can be loaded in its place */
+#define ROM_REIN_TRIO64                "roms/video/rein/86c764p.vbi"
 #define ROM_EXPERTCOLOR_DSP3364P       "roms/video/s3/64V1506.ROM"
 #define ROM_DIAMOND_STEALTH64_764      "roms/video/s3/stealt64.bin"
 #define ROM_TRIO64V2_DX_VBE20          "roms/video/s3/86c775_2.bin"
@@ -166,6 +168,7 @@ enum {
     S3_MIRO_TRIO64V,
     S3_ACER_TRIO64V2,
     S3_ASUS_TRIO64V2,
+    S3_REIN_TRIO64,
     S3_USE_CONFIG_BIOS
 };
 
@@ -10797,6 +10800,14 @@ s3_init(const device_t *info)
             else
                 video_inform(VIDEO_FLAG_TYPE_SPECIAL, &timing_s3_trio64_vlb);
             break;
+        case S3_REIN_TRIO64:
+            bios_fn = ROM_REIN_TRIO64;
+            chip    = S3_TRIO64;
+            if (info->flags & DEVICE_PCI)
+                video_inform(VIDEO_FLAG_TYPE_SPECIAL, &timing_s3_trio64_pci);
+            else
+                video_inform(VIDEO_FLAG_TYPE_SPECIAL, &timing_s3_trio64_vlb);
+            break;
         case S3_SPEA_MIRAGE_P64:
             bios_fn = ROM_SPEA_MIRAGE_P64;
             chip    = S3_TRIO64;
@@ -11494,6 +11505,7 @@ s3_init(const device_t *info)
 
         case S3_PHOENIX_TRIO64:
         case S3_PHOENIX_TRIO64_ONBOARD:
+        case S3_REIN_TRIO64:
         case S3_EXPERTCOLOR_DSP3364P:
         case S3_STB_POWERGRAPH_64_VIDEO:
         case S3_PHOENIX_TRIO64VPLUS:
@@ -12754,6 +12766,16 @@ static const device_config_t s3_trio64_pci_config[] = {
                 .size          = 32768,
                 .flags         = 0,
                 .files         = { ROM_PHOENIX_TRIO64, "" }
+            },
+            {
+                .name          = "reinVGA Trio64",
+                .internal_name = "rein_trio64_pci",
+                .bios_type     = BIOS_NORMAL,
+                .files_no      = 1,
+                .local         = S3_REIN_TRIO64,
+                .size          = 32768,
+                .flags         = 0,
+                .files         = { ROM_REIN_TRIO64, "" }
             },
             { .files_no = 0 }
         },
