@@ -3117,6 +3117,7 @@ s3_out(uint16_t addr, uint8_t val, void *priv)
                     switch (svga->seqaddr) {
                         case 0x12:
                         case 0x13:
+                        case 0x15:
                             svga_recalctimings(svga);
                             return;
 
@@ -4991,6 +4992,12 @@ s3_recalctimings(svga_t *svga)
         svga->render = svga_render_2bpp_s3_highres;
 
     s3_log("Hoverride = %d.\n", svga->hoverride);
+
+    /* SR15 bit 4 divides DCLK by 2 on the Trio32/64 (PLL clock only), so the CRTC runs
+       at half the rate: used by the 320-pixel direct colour modes (double-scanned). */
+    if (((s3->chip == S3_TRIO32) || (s3->chip == S3_TRIO64)) &&
+        (((svga->miscout >> 2) & 3) == 3) && (svga->seqregs[0x15] & 0x10))
+        svga->clock *= 2.0;
 }
 
 static void
