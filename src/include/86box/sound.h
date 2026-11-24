@@ -347,6 +347,9 @@ extern const device_t es1373_onboard_device;
 extern const device_t ct5880_device;
 extern const device_t ct5880_onboard_device;
 
+/* Ensoniq Soundscape */
+extern const device_t sscape_device;
+
 /* Gravis UltraSound family */
 extern const device_t gus_device;
 extern const device_t gus_v34_device;
@@ -359,6 +362,9 @@ extern const device_t gus_pnp_device;
 extern const device_t gus_pnp_new_device;
 extern const device_t gus_pnp_nocd_device;
 extern const device_t gus_pnp_compaq_device;
+
+/* IBM M-ACPA/A (Audio Capture & Playback Adapter) */
+extern const device_t acpa_mca_device;
 
 /* IBM Music Feature Card */
 extern const device_t imfc_device;
