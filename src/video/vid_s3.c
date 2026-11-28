@@ -169,6 +169,7 @@ enum {
     S3_ACER_TRIO64V2,
     S3_ASUS_TRIO64V2,
     S3_REIN_TRIO64,
+    S3_REIN_TRIO64VPLUS,
     S3_USE_CONFIG_BIOS
 };
 
@@ -3582,6 +3583,7 @@ s3_in(uint16_t addr, void *priv)
                 if (((s3->card_type == S3_STB_POWERGRAPH_64_VIDEO) ||
                     (s3->card_type == S3_PHOENIX_TRIO64VPLUS) ||
                     (s3->card_type == S3_PHOENIX_TRIO64VPLUS_ONBOARD) ||
+                    (s3->card_type == S3_REIN_TRIO64VPLUS) ||
                     (s3->card_type == S3_CARDEX_TRIO64VPLUS) ||
                     (s3->card_type == S3_DIAMOND_TRIO64V) ||
                     (s3->card_type == S3_HERCULES_TRIO64V) ||
@@ -10844,6 +10846,12 @@ s3_init(const device_t *info)
             else
                 video_inform(VIDEO_FLAG_TYPE_SPECIAL, &timing_s3_trio64_vlb);
             break;
+        case S3_REIN_TRIO64VPLUS:
+            /* reinVGA: the same clean ROM image on the Trio64V+ */
+            bios_fn = ROM_REIN_TRIO64;
+            chip    = S3_TRIO64V;
+            video_inform(VIDEO_FLAG_TYPE_SPECIAL, &timing_s3_trio64_pci);
+            break;
         case S3_PHOENIX_TRIO64VPLUS_ONBOARD:
             bios_fn = NULL;
             chip    = S3_TRIO64V;
@@ -11517,6 +11525,7 @@ s3_init(const device_t *info)
         case S3_STB_POWERGRAPH_64_VIDEO:
         case S3_PHOENIX_TRIO64VPLUS:
         case S3_PHOENIX_TRIO64VPLUS_ONBOARD:
+        case S3_REIN_TRIO64VPLUS:
         case S3_CARDEX_TRIO64VPLUS:
         case S3_DIAMOND_TRIO64V:
         case S3_HERCULES_TRIO64V:
@@ -13133,6 +13142,16 @@ static const device_config_t s3_trio64vplus_pci_config[] = {
                 .size          = 32768,
                 .flags         = 0,
                 .files         = { ROM_PHOENIX_TRIO64VPLUS, "" }
+            },
+            {
+                .name          = "reinVGA Trio64V+",
+                .internal_name = "rein_trio64vplus_pci",
+                .bios_type     = BIOS_NORMAL,
+                .files_no      = 1,
+                .local         = S3_REIN_TRIO64VPLUS,
+                .size          = 32768,
+                .flags         = 0,
+                .files         = { ROM_REIN_TRIO64, "" }
             },
             { .files_no = 0 }
         },
